@@ -107,10 +107,6 @@ gulp.task('document', [ 'clean' ], function(cb) {
 gulp.task('asset-manifest', [ 'clean' ], function(cb) {
   var conf = readConf();
 
-  _.each(conf.images, function(val, key) {
-    conf.images[key] = val;
-  });
-
   conf = "window.assetManifest = " + JSON.stringify(conf) + ";";
 
   fs.writeFile(BUILD_DIR + 'asset-manifest.js', conf, cb);
