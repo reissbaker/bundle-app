@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+'use strict';
+
 /*
  * Spawns off a gulp process with the right arguments.
  */

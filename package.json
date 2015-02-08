@@ -2,6 +2,9 @@
   "name": "bundle-app",
   "version": "0.0.1",
   "description": "Builds single-page apps from an app.toml",
+  "bin": {
+    "bundle-app": "./bin/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
