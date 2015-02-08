@@ -1,5 +1,5 @@
 {
-  "name": "appbuilder",
+  "name": "bundle-app",
   "version": "0.0.1",
   "description": "Builds single-page apps from an app.toml",
   "scripts": {
