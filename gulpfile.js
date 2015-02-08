@@ -57,10 +57,10 @@ gulp.task('document', [ 'clean' ], function(cb) {
       return { src: filename };
     });
     scripts.push({
-      src: '/asset-manifest.js'
+      src: 'asset-manifest.js'
     });
     scripts.push({
-      src: '/build.js'
+      src: 'build.js'
     });
 
     var rendered = mustache.render(layout, {
