@@ -18,9 +18,9 @@ var gzip = require('gulp-gzip');
 var mustache = require('mustache');
 var readline = require('readline');
 var yargs = require('yargs');
+var path = require('path');
 
 
-var CONF_FILE = 'bundle.toml';
 
 
 /*
@@ -28,11 +28,12 @@ var CONF_FILE = 'bundle.toml';
  * -----------------------------------------------------------------------------
  */
 
-var TARGET_DIR = yargs.argv.input;
+var CONF_FILE = yargs.argv.bundle;
+var TARGET_DIR = path.dirname(CONF_FILE);
 var BUILD_DIR = yargs.argv.output;
 
 if(!BUILD_DIR) throw new Error('Must provide an output dir with --output');
-if(!TARGET_DIR) throw new Error('Must provide an input dir with --input');
+if(!TARGET_DIR) throw new Error('Must provide a bundle.toml with --bundle');
 
 if(TARGET_DIR === BUILD_DIR) {
   throw new Error('Can\'t have the same input and output dirs');
@@ -270,7 +271,7 @@ gulp.task('server', [ 'default' ], function(cb) {
  * wrong.
  */
 function readConf() {
-  var config = fs.readFileSync(TARGET_DIR + CONF_FILE, 'utf-8');
+  var config = fs.readFileSync(CONF_FILE, 'utf-8');
   if(!config) return null;
 
   var parsed = toml.parse(config);
