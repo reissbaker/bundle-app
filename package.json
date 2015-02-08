@@ -22,6 +22,7 @@
     "underscore": "^1.7.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
-    "wate": "^0.1.1"
+    "wate": "^0.1.1",
+    "yargs": "^2.1.1"
   }
 }
