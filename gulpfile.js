@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs');
 var gulp = require('gulp');
 var sourcemaps = require('gulp-sourcemaps');
