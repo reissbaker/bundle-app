@@ -20,6 +20,12 @@ var yargs = require('yargs');
 
 var CONF_FILE = 'app.toml';
 
+
+/*
+ * Set up input, output dirs
+ * -----------------------------------------------------------------------------
+ */
+
 var TARGET_DIR = yargs.argv.input;
 var BUILD_DIR = yargs.argv.output;
 
@@ -40,13 +46,15 @@ if(TARGET_DIR[TARGET_DIR.length - 1] !== '/') {
 // Attempt to read the conf file; this will explode if the input dir is invalid.
 readConf();
 
-function readConf() {
-  var config = fs.readFileSync(TARGET_DIR + CONF_FILE, 'utf-8');
-  if(!config) return null;
 
-  var parsed = toml.parse(config);
-  return parsed;
-}
+/*
+ * Tasks
+ * -----------------------------------------------------------------------------
+ */
+
+/*
+ * Builds the document.
+ */
 
 gulp.task('document', [ 'clean' ], function(cb) {
   var conf = readConf();
@@ -87,6 +95,11 @@ gulp.task('document', [ 'clean' ], function(cb) {
   });
 });
 
+
+/*
+ * Builds the asset manifest.
+ */
+
 gulp.task('asset-manifest', [ 'clean' ], function(cb) {
   var conf = readConf();
 
@@ -98,6 +111,11 @@ gulp.task('asset-manifest', [ 'clean' ], function(cb) {
 
   fs.writeFile(BUILD_DIR + 'asset-manifest.js', conf, cb);
 });
+
+
+/*
+ * Compiles the main file with browserify, and copies any other files.
+ */
 
 gulp.task('scripts', [ 'clean' ], function() {
   var conf = readConf();
@@ -116,6 +134,11 @@ gulp.task('scripts', [ 'clean' ], function() {
     .pipe(gulp.dest(BUILD_DIR));
 });
 
+
+/*
+ * Compresses scripts with gzip, for calculating vanity metrics.
+ */
+
 gulp.task('compress-scripts', [ 'scripts' ], function() {
   return gulp.src('./build/build.js')
     .pipe(gzip({
@@ -126,11 +149,21 @@ gulp.task('compress-scripts', [ 'scripts' ], function() {
     .pipe(gulp.dest(BUILD_DIR));
 });
 
+
+/*
+ * Crushes PNGs. Doesn't handle other filetypes yet.
+ */
+
 gulp.task('images', [ 'clean' ], function(cb) {
   var conf = readConf();
   var processedImages = _.map(conf.images, pngcrush);
   wate.all(processedImages).done(cb);
 });
+
+
+/*
+ * Copies stylesheets. Doesn't do any compression yet.
+ */
 
 gulp.task('styles', [ 'clean' ], function(cb) {
   var conf = readConf();
@@ -156,6 +189,11 @@ function pngcrush(image) {
   });
 }
 
+
+/*
+ * Cleans the build directory.
+ */
+
 gulp.task('clean', function(cb) {
   del([ BUILD_DIR ], { force: true }, function() {
     shell.mkdir('-p', BUILD_DIR);
@@ -166,6 +204,11 @@ gulp.task('clean', function(cb) {
   });
 });
 
+
+/*
+ * Default task cleans and rebuilds everything.
+ */
+
 gulp.task('default', [
   'clean',
   'scripts',
@@ -175,6 +218,13 @@ gulp.task('default', [
   'asset-manifest',
   'styles'
 ]);
+
+
+/*
+ * Server tasks cleans and builds everything, starts a local fileserver to serve
+ * the app, and watches for changes. Right now the changes to watch for are
+ * hardcoded; this should instead read from the conf file.
+ */
 
 gulp.task('server', [ 'default' ], function(cb) {
   var watchers = [
@@ -211,3 +261,15 @@ gulp.task('server', [ 'default' ], function(cb) {
 
   exec('open http://localhost:8000');
 });
+
+/*
+ * Reads the conf file synchronously and returns it. Explodes if anything goes
+ * wrong.
+ */
+function readConf() {
+  var config = fs.readFileSync(TARGET_DIR + CONF_FILE, 'utf-8');
+  if(!config) return null;
+
+  var parsed = toml.parse(config);
+  return parsed;
+}
