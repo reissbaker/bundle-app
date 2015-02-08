@@ -53,6 +53,9 @@ gulp.task('document', [ 'clean' ], function(cb) {
   var all = [ body, layout ];
   wate.firstError(all, cb);
   wate.spreadAll(all, function(body, layout) {
+    _.each(conf.scripts.files, function(filename) {
+      shell.cp(TARGET_DIR + filename, BUILD_DIR + filename);
+    });
     var scripts = _.map(conf.scripts.files, function(filename) {
       return { src: filename };
     });
@@ -150,6 +153,7 @@ gulp.task('clean', function(cb) {
     shell.mkdir('-p', BUILD_DIR);
     shell.mkdir('-p', BUILD_DIR + 'assets');
     shell.mkdir('-p', BUILD_DIR + 'styles');
+    shell.mkdir('-p', BUILD_DIR + 'vendor');
     cb();
   });
 });
