@@ -1,14 +1,23 @@
 {
   "name": "bundle-app",
   "version": "0.0.1",
+  "author": "Matt Baker",
   "description": "Builds single-page apps from an app.toml",
+  "repository": [
+    {
+      "type": "git",
+      "url": "https://github.com/reissbaker/bundle-app.git"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/reissbaker/bundle-app/issues"
+  },
   "bin": {
     "bundle-app": "./bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Matt Baker",
   "license": "ISC",
   "dependencies": {
     "browserify": "^8.1.1",
