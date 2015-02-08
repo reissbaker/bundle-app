@@ -83,6 +83,7 @@ gulp.task('document', [ 'clean' ], function(cb) {
     });
 
     var rendered = mustache.render(layout, {
+      mobile: conf.document.mobile,
       title: conf.app.name,
       styles: _.map(conf.styles.files, function(filename) {
         return { href: filename };
