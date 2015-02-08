@@ -156,7 +156,7 @@ gulp.task('compress-scripts', [ 'scripts' ], function() {
 
 gulp.task('images', [ 'clean' ], function(cb) {
   var conf = readConf();
-  var processedImages = _.map(conf.images.named, pngcrush);
+  var processedImages = _.map(conf.assets.images, pngcrush);
   wate.all(processedImages).done(cb);
 });
 
