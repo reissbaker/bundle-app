@@ -17,11 +17,18 @@ var mustache = require('mustache');
 var readline = require('readline');
 var yargs = require('yargs');
 
+
+var CONF_FILE = 'app.toml';
+
 var TARGET_DIR = yargs.argv.input;
 var BUILD_DIR = yargs.argv.output;
 
 if(!BUILD_DIR) throw new Error('Must provide an output dir with --output');
 if(!TARGET_DIR) throw new Error('Must provide an input dir with --input');
+
+if(TARGET_DIR === BUILD_DIR) {
+  throw new Error('Can\'t have the same input and output dirs');
+}
 
 if(BUILD_DIR[BUILD_DIR.length - 1] !== '/') {
   BUILD_DIR = BUILD_DIR + '/';
@@ -30,7 +37,8 @@ if(TARGET_DIR[TARGET_DIR.length - 1] !== '/') {
   TARGET_DIR = TARGET_DIR + '/';
 }
 
-var CONF_FILE = 'app.toml';
+// Attempt to read the conf file; this will explode if the input dir is invalid.
+readConf();
 
 function readConf() {
   var config = fs.readFileSync(TARGET_DIR + CONF_FILE, 'utf-8');
