@@ -1,0 +1,13 @@
+*~
+*.swp
+*.swo
+
+.DS_Store
+
+node_modules/
+
+build/
+
+index.html
+
+test/**/*.js
