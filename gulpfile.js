@@ -72,10 +72,10 @@ gulp.task('document', [ 'clean' ], function(cb) {
   var all = [ body, layout ];
   wate.firstError(all, cb);
   wate.spreadAll(all, function(body, layout) {
-    _.each(conf.scripts.files, function(filename) {
+    _.each(conf.script.files, function(filename) {
       shell.cp(TARGET_DIR + filename, BUILD_DIR + filename);
     });
-    var scripts = _.map(conf.scripts.files, function(filename) {
+    var scripts = _.map(conf.script.files, function(filename) {
       return { src: filename };
     });
     scripts.push({
@@ -88,7 +88,7 @@ gulp.task('document', [ 'clean' ], function(cb) {
     var rendered = mustache.render(layout, {
       mobile: conf.document.mobile,
       title: conf.app.name,
-      styles: _.map(conf.styles.files, function(filename) {
+      styles: _.map(conf.style.files, function(filename) {
         return { href: filename };
       }),
       body: body,
@@ -107,8 +107,8 @@ gulp.task('document', [ 'clean' ], function(cb) {
 gulp.task('asset-manifest', [ 'clean' ], function(cb) {
   var conf = readConf();
 
-  _.each(conf.images, function(val, key) {
-    conf.images[key] = val;
+  _.each(conf.image.named, function(val, key) {
+    conf.image.named[key] = val;
   });
 
   conf = "window.assetManifest = " + JSON.stringify(conf) + ";";
@@ -125,7 +125,7 @@ gulp.task('scripts', [ 'clean' ], function() {
   var conf = readConf();
 
   var bundler = browserify({
-    entries: [ TARGET_DIR + conf.scripts.entryPoint ],
+    entries: [ TARGET_DIR + conf.script.entryPoint ],
     debug: true
   });
 
@@ -160,7 +160,7 @@ gulp.task('compress-scripts', [ 'scripts' ], function() {
 
 gulp.task('images', [ 'clean' ], function(cb) {
   var conf = readConf();
-  var processedImages = _.map(conf.images.named, pngcrush);
+  var processedImages = _.map(conf.image.named, pngcrush);
   wate.all(processedImages).done(cb);
 });
 
@@ -171,7 +171,7 @@ gulp.task('images', [ 'clean' ], function(cb) {
 
 gulp.task('styles', [ 'clean' ], function(cb) {
   var conf = readConf();
-  _.each(conf.styles.files, function(filename) {
+  _.each(conf.style.files, function(filename) {
     shell.cp(TARGET_DIR + filename, BUILD_DIR + filename);
   });
   cb();
