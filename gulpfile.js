@@ -140,7 +140,7 @@ gulp.task('scripts', [ 'clean' ], function() {
  */
 
 gulp.task('compress-scripts', [ 'scripts' ], function() {
-  return gulp.src('./build/build.js')
+  return gulp.src(BUILD_DIR + 'build.js')
     .pipe(gzip({
       gzipOptions: {
         level: 9
