@@ -18,7 +18,7 @@ var readline = require('readline');
 var yargs = require('yargs');
 
 
-var CONF_FILE = 'app.toml';
+var CONF_FILE = 'bundle.toml';
 
 
 /*
@@ -229,7 +229,7 @@ gulp.task('default', [
 
 gulp.task('server', [ 'default' ], function(cb) {
   var watchers = [
-    gulp.watch('app.toml', [ 'default' ]),
+    gulp.watch('bundle.toml', [ 'default' ]),
     gulp.watch('body.html', [ 'default' ]),
     gulp.watch('layout.mustache', [ 'default' ]),
     gulp.watch('demo/*.js', [ 'default' ]),
