@@ -1,6 +1,6 @@
 {
   "name": "bundle-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Matt Baker",
   "description": "Builds single-page apps from an app.toml",
   "repository": [
