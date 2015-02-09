@@ -79,9 +79,14 @@ gulp.task('document', [ 'clean' ], function(cb) {
     var scripts = _.map(conf.scripts.files, function(filename) {
       return { src: filename };
     });
-    scripts.push({
-      src: 'asset-manifest.js'
-    });
+
+    // Only use the global asset manifest if there isn't a module system.
+    if(conf.scripts.moduleSystem !== 'commonjs') {
+      scripts.push({
+        src: 'asset-manifest.js'
+      });
+    }
+
     scripts.push({
       src: 'build.js'
     });
@@ -107,7 +112,7 @@ gulp.task('document', [ 'clean' ], function(cb) {
 gulp.task('asset-manifest', [ 'clean' ], function(cb) {
   var conf = readConf();
 
-  conf = "window.assetManifest = " + JSON.stringify(conf) + ";";
+  conf = "window.bundleApp = " + JSON.stringify(conf) + ";";
 
   fs.writeFile(BUILD_DIR + 'asset-manifest.js', conf, cb);
 });
