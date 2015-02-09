@@ -230,6 +230,8 @@ gulp.task('server', [ 'default' ], function(cb) {
   var watchers = [
     gulp.watch(CONF_FILE, [ 'default' ]),
     gulp.watch('layout.mustache', [ 'default' ]),
+
+    // Below is broken due to the cwd changing: FIXME
     //gulp.watch('demo/*.js', [ 'default' ]),
     //gulp.watch('demo/**/*.js', [ 'default' ]),
   ];
