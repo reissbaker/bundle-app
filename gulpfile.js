@@ -19,6 +19,8 @@ var mustache = require('mustache');
 var readline = require('readline');
 var yargs = require('yargs');
 var path = require('path');
+var bundleAppTransform = require('./bundle-app-transform');
+var brfs = require('brfs');
 
 
 
@@ -123,7 +125,7 @@ gulp.task('scripts', [ 'clean' ], function() {
     debug: true
   });
 
-  bundler.transform('brfs');
+  bundler.transform(brfs).transform(bundleAppTransform(conf));
 
   return bundler.bundle()
     .pipe(source('build.js'))
