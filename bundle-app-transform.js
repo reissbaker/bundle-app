@@ -1,7 +1,6 @@
 var staticModule = require('static-module')
 var path = require('path')
 var through = require('through2')
-var escape = require('js-string-escape')
 
 module.exports = function(bundle) {
   var stringified = JSON.stringify(bundle);
