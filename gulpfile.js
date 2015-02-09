@@ -228,10 +228,10 @@ gulp.task('default', [
 
 gulp.task('server', [ 'default' ], function(cb) {
   var watchers = [
-    gulp.watch('bundle.toml', [ 'default' ]),
+    gulp.watch(CONF_FILE, [ 'default' ]),
     gulp.watch('layout.mustache', [ 'default' ]),
-    gulp.watch('demo/*.js', [ 'default' ]),
-    gulp.watch('demo/**/*.js', [ 'default' ]),
+    //gulp.watch('demo/*.js', [ 'default' ]),
+    //gulp.watch('demo/**/*.js', [ 'default' ]),
   ];
 
   var server = spawn('python', [ '-m', 'SimpleHTTPServer', '8000' ], {
