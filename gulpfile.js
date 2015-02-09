@@ -65,13 +65,12 @@ gulp.task('document', [ 'clean' ], function(cb) {
   var layout = wate.make(function(cb) {
     fs.readFile('layout.mustache', 'utf-8', cb);
   });
-  var body = wate.make(function(cb) {
-    fs.readFile(TARGET_DIR + conf.document.body, 'utf-8', cb);
-  });
 
-  var all = [ body, layout ];
-  wate.firstError(all, cb);
-  wate.spreadAll(all, function(body, layout) {
+  fs.readFile('layout.mustache', 'utf-8', function(err, layout) {
+    if(err) {
+      cb(err);
+      return;
+    }
     _.each(conf.scripts.files, function(filename) {
       shell.cp(TARGET_DIR + filename, BUILD_DIR + filename);
     });
@@ -91,7 +90,6 @@ gulp.task('document', [ 'clean' ], function(cb) {
       styles: _.map(conf.styles.files, function(filename) {
         return { href: filename };
       }),
-      body: body,
       scripts: scripts,
     });
 
@@ -124,6 +122,8 @@ gulp.task('scripts', [ 'clean' ], function() {
     entries: [ TARGET_DIR + conf.scripts.entryPoint ],
     debug: true
   });
+
+  bundler.transform('brfs');
 
   return bundler.bundle()
     .pipe(source('build.js'))
@@ -229,7 +229,6 @@ gulp.task('default', [
 gulp.task('server', [ 'default' ], function(cb) {
   var watchers = [
     gulp.watch('bundle.toml', [ 'default' ]),
-    gulp.watch('body.html', [ 'default' ]),
     gulp.watch('layout.mustache', [ 'default' ]),
     gulp.watch('demo/*.js', [ 'default' ]),
     gulp.watch('demo/**/*.js', [ 'default' ]),
